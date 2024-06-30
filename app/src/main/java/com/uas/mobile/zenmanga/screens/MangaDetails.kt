@@ -1,8 +1,6 @@
 package com.uas.mobile.zenmanga.screens
 
-//import com.uas.mobile.zenmanga.utils.Status
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
@@ -52,8 +50,6 @@ fun MangaDetails(navController: NavController?, viewModel: MangaViewModel) {
     val manga = (viewModel as? SearchViewModel)?.manga?.collectAsState() ?: return
     val scrollState = rememberScrollState()
 
-    Log.d("idManga", "manga con id ${manga.value?.id}")
-
     manga.value?.let { mangaValue ->
         LaunchedEffect(Unit) {
             viewModel.getChapters(mangaValue.id)
@@ -63,7 +59,6 @@ fun MangaDetails(navController: NavController?, viewModel: MangaViewModel) {
         val selectedChapter = remember { mutableStateOf(-1) }
 
         if (selectedChapter.value != -1) {
-            Log.d("toReader", "go to the chapter ${selectedChapter.value}")
             navController?.navigate("${Routes.READER}/${selectedChapter.value}")
         }
 
@@ -132,13 +127,11 @@ fun ChaptersToggle(chapters: List<ChapterDTO>, onSelect: LambdaChapter) {
 @Composable
 fun ChapterItem(chapter: ChapterDTO, index: Int, onSelect: LambdaChapter) {
     val title = (chapter.attributes?.title ?: "").ifEmpty { "" }
-    Log.d("chapterItem", "index=$index")
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
             .clickable {
-                Log.d("chapterItem", "chapter $index")
                 onSelect(index)
             },
         verticalAlignment = Alignment.CenterVertically
